@@ -1,0 +1,12 @@
+# Python caches
+__pycache__/
+*.pyc
+
+# Virtual environment
+env/
+
+# Instance folder (local DB + secrets)
+instance/
+
+# Environment files
+.env

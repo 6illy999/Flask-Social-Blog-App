@@ -9,11 +9,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "mysecretekey123"
+app = Flask(__name__, static_folder="static")
 
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'dev_secret_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 def login_required(f):
@@ -35,19 +36,34 @@ class Post(db.Model):
 
 @app.route("/")
 def home():
-
     posts = Post.query.all()
+    if "user" in session:
+        user = User.query.get(session.get("user_id"))
+    else:
+        user = None
 
-    return render_template("index.html", posts=posts)
+    return render_template("index.html", posts=posts, user=user)
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+
+    if "user" in session:
+        user = User.query.get(session.get("user_id"))
+    else:
+        user = None
+
+    return render_template("about.html", user=user)
 
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add_post():
+
+    
+    if "user" in session:
+        user = User.query.get(session.get("user_id"))
+    else:
+        user = None
     '''if "user" not in session:
         return redirect(url_for("login"))'''
     
@@ -69,19 +85,25 @@ def add_post():
 
         return redirect(url_for("home"))
     
-    return render_template("add_post.html")
+    return render_template("add_post.html", user=user)
 
 #Dynamic route
 @app.route("/post/<int:post_id>")
 @login_required
 def show_post(post_id):
 
+    
+    if "user" in session:
+        user = User.query.get(session.get("user_id"))
+    else:
+        user = None
+
     ''' 
     if not session.get("user"): # User_id?
         return redirect(url_for("login"))
     '''
     post = Post.query.get_or_404(post_id)
-    return render_template("post.html", post=post)
+    return render_template("post.html", post=post, user=user)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -114,6 +136,7 @@ def login():
 
 @app.route("/logout")
 def logout():
+
     if "user" in session:
         session.clear()
     '''
@@ -126,8 +149,14 @@ def logout():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+
     
-    return render_template("dashboard.html")
+    if "user" in session:
+        user = User.query.get(session.get("user_id"))
+    else:
+        user = None
+    
+    return render_template("dashboard.html", user=user)
 
 
 class User(db.Model):
@@ -250,8 +279,6 @@ def edit_profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
     '''
-    min_pass_len = 4
-    
     user = User.query.get(session["user_id"]) # User.query.filter_by(username=session["user"]).first() # User.query.filter_by(username=session["user"])
 
     if request.method == "POST":
@@ -259,8 +286,8 @@ def edit_profile():
         new_email = request.form.get("email") # request.form["email"].strip()
         new_bio = request.form.get("new_bio") # request.form["bio"].strip()
         pic = request.files.get("profile_pic") # request.files["profile_pic"]
-        current_password =request.form.get("current_password") # request.form["current_pasword"]
-        new_password = request.form.get("new_password") # request.form["new_password"]
+        
+        
 
         # Check if username already exists
         existing_user = User.query.filter_by(username=new_username).first()
@@ -276,20 +303,6 @@ def edit_profile():
         user.username = new_username
         user.email = new_email
         user.bio = new_bio
-
-        # Check password (only if fields filled)
-        if current_password and new_password:
-            if not check_password_hash(user.password, current_password):
-                return "Current password is incorrect!"
-                
-
-            if len(new_password) < min_pass_len:
-                return "Password must be at least 4 characters."
-
-            if check_password_hash(user.password, new_password):
-                return "You can't use your old password!"
-            
-            user.password = generate_password_hash(new_password)
             
                 
 
@@ -307,6 +320,39 @@ def edit_profile():
         
     return render_template("edit_profile.html", user=user)
 
+@app.route("/pass_change", methods=["GET", "POST"])
+@login_required
+def change_pass():
+    min_pass_len = 4
+
+    user = User.query.get(session["user_id"]) # User.query.filter_by(username=session["user"]).first() # User.query.filter_by(username=session["user"])
+
+
+    if request.method == "POST":
+        new_password = request.form.get("new_password") # request.form["new_password"]
+        current_password = request.form.get("current_password") # request.form["current_pasword"]
+
+          # Check password (only if fields filled)
+        if current_password and new_password:
+            if not check_password_hash(user.password, current_password):
+                return "Current password is incorrect!"
+                
+
+            if len(new_password) < min_pass_len:
+                return "Password must be at least 4 characters."
+
+            if check_password_hash(user.password, new_password):
+                return "You can't use your old password!"
+            
+            user.password = generate_password_hash(new_password)
+
+            db.session.commit()
+
+        return redirect(url_for("profile", username=user.username))
+        
+    return render_template("change_pass.html", user=user)
+
+
 '''
         if new_username:
             user.username = new_username
@@ -319,7 +365,7 @@ def edit_profile():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
 
 
 '''
@@ -347,4 +393,15 @@ with app.app_context():
     db.session.commit()
     db.create_all()
 exit()
+'''
+
+
+'''
+from app import app, db, User
+from werkzeug.security import generate_password_hash
+with app.app_context():
+    hashed_pw = generate_password_hash("1234")
+    admin = User(username="admin", password=hashed_pw, email="admin@gmail.com", is_admin=True)
+    db.session.add(admin)
+    db.session.commit()
 '''

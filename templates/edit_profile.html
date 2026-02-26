@@ -20,13 +20,7 @@
         <label for="">Profile Picture:</label>
         <input type="file" name="profile_pic">
 
-        <h3>Change password</h3>
-
-        <label for="">Current Password:</label>
-        <input type="password" name="current_password" required>
-
-        <label for="">New Password:</label>
-        <input type="password" name="new_password" required>
+        <a href="{{ url_for('change_pass') }}">Change password?</a>
 
         <button type="submit">Save channges</button>
         

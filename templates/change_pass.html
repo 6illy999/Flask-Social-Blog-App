@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="main-content">
+
+    <form action="" method="POST" enctype="multipart/form-data" class="add-post-form edit_profile">
+
+        <h3>Change password</h3>
+
+        <label for="">Current Password:</label>
+        <input type="password" name="current_password" required>
+
+        <label for="">New Password:</label>
+        <input type="password" name="new_password" required>
+
+        <button type="submit">Save channges</button>
+
+        <a href="{{ url_for('edit_profile') }}">Back</a>
+        
+    </form>
+
+</div>
+
+{% endblock %}
