@@ -4,10 +4,10 @@
 <div class="main-content">
     <div class="header">
     {% if session.get("user") %}
-        <a href="{{ url_for('home') }}"><h2 class="header-1 links">All Posts</h2></a>
-        <a href="{{ url_for('my_posts') }}"><h2 class="header-2 links">My Posts</h2></a>
+        <a href="{{ url_for('main.home') }}"><h2 class="header-1 links">All Posts</h2></a>
+        <a href="{{ url_for('posts.my_posts') }}"><h2 class="header-2 links">My Posts</h2></a>
     {% else %}
-        <a href="{{ url_for('home') }}"><h2 class="header-1 links">All Posts</h2></a>
+        <a href="{{ url_for('main.home') }}"><h2 class="header-1 links">All Posts</h2></a>
     {% endif %}
     </div>
 
@@ -15,11 +15,11 @@
             
     <div class="post">
         <div class="post-heading">
-            <a href="{{ url_for('profile', username=post.author_obj.username) }}"><img src="{{ url_for('static', filename='profile_pics/' + post.author_obj.profile_pic) }}" alt=""></a>
+            <a href="{{ url_for('profile.user_profile', username=post.author_obj.username) }}"><img src="{{ url_for('static', filename='profile_pics/' + post.author_obj.profile_pic) }}" alt=""></a>
                 
             <div class="post-heading-content">
-                <h3><a href="{{ url_for('show_post', post_id=post.id) }}" class="links">{{ post.title }}</a></h3>
-                <p><small>By <a href="{{ url_for('profile', username=post.author_obj.username) }}"><span class="links">{{ post.author_obj.username }}</span></a> on {{ post.created_at.strftime('%b %d, %Y %H:%M') }}</small></p>
+                <h3><a href="{{ url_for('posts.show_post', post_id=post.id) }}" class="links">{{ post.title }}</a></h3>
+                <p><small>By <a href="{{ url_for('profile.user_profile', username=post.author_obj.username) }}"><span class="links">{{ post.author_obj.username }}</span></a> on {{ post.created_at.strftime('%b %d, %Y %H:%M') }}</small></p>
                         
             </div>
                     
@@ -33,9 +33,9 @@
 
         <a href=""><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg></a>
 
-        <a href="{{ url_for('edit_post', post_id=post.id) }}"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000"><path d="M560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v120h-80v-80H520v-200H240v640h240v80H240Zm280-400Zm241 199-19-18 37 37-18-19Z"/></svg></a>
+        <a href="{{ url_for('posts.edit_post', post_id=post.id) }}"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000"><path d="M560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v120h-80v-80H520v-200H240v640h240v80H240Zm280-400Zm241 199-19-18 37 37-18-19Z"/></svg></a>
 
-        <form action="{{ url_for('delete_post', post_id=post.id) }}" method='POST' onsubmit='return confirmDelete()'>
+        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method='POST' onsubmit='return confirmDelete()'>
             <button class="delete-btn"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
         </form>
     </div>
