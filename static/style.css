@@ -14,27 +14,54 @@ body {
     background-color: #ffffff;
 }
 
-.top-nav {
+
+.navigation {
+    background-color: #bdc7ce;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+
+.top-nav { /* height: 56px */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100px;
-    border-bottom: 1px solid #dfe6e9;
-    background-color: #bdc7ce;
+    padding: 8px 24px;
     color: #3f3d3c;
 }
 
-.top-nav .profile, .top-nav .menu {
-    margin: 0 20px;
+.main-content {
+    padding-bottom: 1px;
 }
 
-
-
-
-.profile {
-    font-display: flex;
-    flex-direction: column;
+.header {
+    display: flex;
+    justify-content: space-around;
     align-items: center;
+    padding-bottom: 1px;
+    margin-top: 6px;
+}
+
+.header h2 {
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.active{
+    position: relative;
+    display: inline-block;
+}
+
+.active::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: white;
 }
 
 
@@ -43,37 +70,52 @@ body {
     justify-content: center;
 }
 
+.logo {
+    font-size: 24px;
+    font-family: cursive;
+}
+
 .profile svg {
     display: block;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 }
 
 .profile a img {
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 }
 
 .bottom-nav {
-    padding: 30px 0;
+    padding: 8px 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 40px;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     background-color: #bdc7ce; /* #bababa61; */
-    box-shadow: 0px 1px 10px rgb(0, 0, 0, 0.8);
     z-index: 1000;
     color: #3f3d3c;
 }
 
+.bottom-nav svg {
+    width: 24px;
+    height: 24px;
+}
 
 
 
+.index-container {
+    margin-top: 80px;
+    margin-bottom: 44px;
+}
+
+.index-container p {
+    font-size: 16px;
+}
 
 
 .post-edit {
@@ -84,18 +126,8 @@ body {
 
 
 
-
-
-.header {
-    display: flex;
-    justify-content: space-around;
-    margin: 10px 0 20px;
-}
-
-
-
 .post {
-    margin: 10px 10px 0;
+    margin: 3px 6px 0;
 }
 
 .post-wrapper {
@@ -105,20 +137,21 @@ body {
 
 .post-heading {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 6px;
+}
+
+.post-heading small {
+    font-size: 12px;
+}
+
+.post-heading h3 {
+    font-size: 18px;
 }
 
 
-.post-heading-content {
-    flex-grow: 1;
-    text-align: start;
-}
 
 .post-content {
-  margin-top: 15px;
-  margin-left: 34px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 
@@ -129,8 +162,8 @@ body {
 
 .post a img {
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
 }
 
 
@@ -431,8 +464,3 @@ body {
 
 
 
-
-
-.main-content {
-    padding-bottom: 60px;
-}

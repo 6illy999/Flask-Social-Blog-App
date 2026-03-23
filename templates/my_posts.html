@@ -18,7 +18,7 @@
                 <div class="post-heading-content" style="margin-left:34px;">
                     <!---<img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) }}" alt="" width="60">  ---->
                     <h3><a href="{{ url_for('posts.show_post', post_id=post.id) }}" class="links">{{ post.title }}</a></h3>
-                    <p><small>By <a href="{{ url_for('main.profile', username=post.author_obj.username) }}" class="links">{{ post.author_obj.username }}</a> on {{ post.created_at.strftime('%b %d, %Y %H:%M') }}</small></p>
+                    <p><small>By <a href="{{ url_for('profile.user_profile', username=post.author_obj.username) }}" class="links">{{ post.author_obj.username }}</a> on {{ post.created_at.strftime('%b %d, %Y %H:%M') }}</small></p>
                     
                 </div>
                 

@@ -2,14 +2,13 @@ from flask import Flask
 from app.extensions import db#, migrate
 from config import DevelopmentConfig
 
-def create_app(config_class):
+def create_app():
     app = Flask(__name__, static_folder="../static", template_folder="../templates") # Create Flask app instance
 
-    print("CONFIG CLASS:", config_class)
-
+    #print("CONFIG CLASS:", config_class)
 
     #load configuration
-    app.config.from_object(config_class)
+    app.config.from_object("config.DevelopmentConfig")
 
     '''
     db_url = app.config["SQLALCHEMY_DATABASE_URI"]

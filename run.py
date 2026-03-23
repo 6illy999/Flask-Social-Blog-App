@@ -1,7 +1,7 @@
 from app import create_app
 from config import DevelopmentConfig
 
-app = create_app(DevelopmentConfig)
+app = create_app()# app = create_app(DevelopmentConfig)
 
 # Print all registered routes
 for rule in app.url_map.iter_rules():

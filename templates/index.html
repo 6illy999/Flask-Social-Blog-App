@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="main-content">
-    <div class="header">
-    {% if session.get("user") %}
-        <a href="{{ url_for('main.home') }}"><h2 class="header-1 links">All Posts</h2></a>
-        <a href="{{ url_for('posts.my_posts') }}"><h2 class="header-2 links">My Posts</h2></a>
-    {% else %}
-        <a href="{{ url_for('main.home') }}"><h2 class="header-1 links">All Posts</h2></a>
-    {% endif %}
-    </div>
 
+
+{% block content %}
+
+
+<div class="index-container">
+    
     {% for post in posts %}
             
     <div class="post">
@@ -20,11 +16,10 @@
             <div class="post-heading-content">
                 <h3><a href="{{ url_for('posts.show_post', post_id=post.id) }}" class="links">{{ post.title }}</a></h3>
                 <p><small>By <a href="{{ url_for('profile.user_profile', username=post.author_obj.username) }}"><span class="links">{{ post.author_obj.username }}</span></a> on {{ post.created_at.strftime('%b %d, %Y %H:%M') }}</small></p>
-                        
+                <p class="post-content">{{ post.content[:120] }}</p>
             </div>
                     
         </div>
-            <p class="post-content">{{ post.content[:120] }}</p>
                 
     </div>
 
